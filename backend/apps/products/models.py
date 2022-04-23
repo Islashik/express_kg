@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 
 
@@ -52,5 +51,21 @@ class Product(models.Model):
         verbose_name_plural = 'Товары'
         ordering =['-created']
 
+
+
+class Review(models.Model):
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    user_id = models.ForeignKey(User, on_delete= models.CASCADE, related_names='reviews')
+    text = models.TextField('Отзыв')
+    created = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField('Активный', default=True)
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+
     def __str__(self):
-        return self.name
+        return f'{self.id}'
+
+
