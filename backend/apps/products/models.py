@@ -1,4 +1,5 @@
 from django.db import models
+from backend.apps.accounts.models import User
 # Create your models here.
 
 
@@ -19,7 +20,7 @@ class Category(models.Model):
 
 class SubCategory(models.Model):
 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name = 'subcategories')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories')
     name = models.CharField('Название', max_length=70, unique=True)
     slug = models.SlugField('Слаг',max_length=80, unique=True)
 
@@ -41,7 +42,7 @@ class Product(models.Model):
     price = models.DecimalField('Цена', max_digits=10, decimal_places=2)
     image = models.ImageField('Фото', upload_to='product_images/')
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
-    sub_category = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='products')
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.PROTECT, related_name='products')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField('Активный', default=True)
@@ -56,7 +57,7 @@ class Product(models.Model):
 class Review(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
-    user_id = models.ForeignKey(User, on_delete= models.CASCADE, related_names='reviews')
+    user_id = models.ForeignKey(User, on_delete= models.CASCADE, related_name='reviews')
     text = models.TextField('Отзыв')
     created = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField('Активный', default=True)
